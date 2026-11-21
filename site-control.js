@@ -9,6 +9,7 @@ const siteControl=(()=>{
     themeColor:'#4B176F',
     defaultTheme:'light',
     defaultLang:'ar',
+    metaDescription:'AMAN – أمان: منصة مغربية للوقاية من العنف ضد النساء والفتيات.',
     emergencyNumbers:'19 · 177 · 15 · 8350',
     sosEnabled:true,
     modules:{
@@ -51,6 +52,7 @@ const siteControl=(()=>{
     let out=html
       .replace(/<html lang="[^"]*" dir="[^"]*">/,`<html lang="${e(s.defaultLang)}" dir="${dir}">`)
       .replace(/<title>[^<]*<\/title>/,`<title>${e(s.siteTitle)}</title>`)
+      .replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${e(s.metaDescription)}">`)
       .replace(/<meta name="theme-color" content="[^"]*">/,`<meta name="theme-color" content="${e(s.themeColor)}">`)
       .replace(/19 · 177 · 15 · 8350/g,e(s.emergencyNumbers));
     if(!s.sosEnabled)out=out.replace(/<button type="button" class="btn-sos"[^>]*>[\s\S]*?<\/button>/,'');
@@ -63,7 +65,7 @@ const siteControl=(()=>{
     if(!s.modules.footer)out=out.replace(/<footer>[\s\S]*?<\/footer>/,'');
     return out;
   }
-  return {read,update,toggleModule,reset,patchHTML};
+  return {read,update,toggleModule,reset,applyPreset,patchHTML};
 })();
 
 function siteControlHTML(){
@@ -86,6 +88,7 @@ function siteControlHTML(){
           field('Theme color','themeColor',s.themeColor,{required:true,max:20})+
           field('Default theme','defaultTheme',s.defaultTheme,{items:[['light',t('Light')],['dark',t('Dark')]]})+
           field('Default language','defaultLang',s.defaultLang,{items:[['ar',t('Arabic')],['fr',t('French')],['en',t('English')]]})+
+          field('Meta description','metaDescription',s.metaDescription,{required:true,max:220,wide:true,area:true})+
           field('Emergency numbers','emergencyNumbers',s.emergencyNumbers,{required:true,max:80,wide:true})+
           check('Enable SOS button','sosEnabled',s.sosEnabled)+
           submit('Apply preview')+
@@ -94,7 +97,19 @@ function siteControlHTML(){
       `<section class="panel"><h2>${h('Public modules')}</h2>`+
         `<p class="sub">${h('Toggle which sections are active on the public index.html.')}</p>`+
         `<ul class="list">${moduleList.map(([key,label])=>`<li><span class="event">${h(label)}</span>${btn(s.modules[key]?'Enabled':'Disabled',`site-mod:${key}`,s.modules[key]?'primary':'secondary')}</li>`).join('')}</ul>`+
+        `<hr class="divider"><div class="actions">${btn('Standard mode','site-preset:standard')}${btn('Emergency mode','site-preset:emergency')}${btn('French mode','site-preset:french')}</div>`+
         `<hr class="divider"><div class="actions">${btn('Download patched index.html','site-download-html','primary')}${btn('Export config JSON','site-export')}${btn('Reset defaults','site-reset')}</div>`+
       `</section>`+
-    `</div>`;
+    `</div>`+
+    `<section class="panel"><h2>${h('Live public site status')}</h2>`+
+      detailFields([
+        ['Site title',s.siteTitle],
+        ['Default language',s.defaultLang.toUpperCase()],
+        ['Default theme',t(s.defaultTheme==='dark'?'Dark':'Light')],
+        ['Theme color',s.themeColor],
+        ['Emergency numbers',s.emergencyNumbers],
+        ['SOS button',t(s.sosEnabled?'Enabled':'Disabled')],
+        ['Active modules',`${Object.values(s.modules).filter(Boolean).length} / ${Object.keys(s.modules).length}`]
+      ])+
+    `</section>`;
 }
