@@ -156,5 +156,8 @@ const messages={
   'Reset defaults':['Réinitialiser','إعادة الافتراضي'],
   'Live public site status':['État en direct du site public','الحالة المباشرة للموقع العام'],
   'SOS button':['Bouton SOS','زر الطوارئ SOS'],
-  'Active modules':['Modules actifs','الوحدات النشطة']
+  'Active modules':['Modules actifs','الوحدات النشطة'],
+  'Standard mode':['Mode standard','الوضع القياسي'],
+  'Emergency mode':['Mode urgence','وضع الطوارئ'],
+  'French mode':['Mode français','الوضع الفرنسي']
 };
