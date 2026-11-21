@@ -238,7 +238,13 @@ function globalSearch(){
 }
 function detailBack(){const x=dialogModel;if(x)return showDetail(x.section,x.id,x.extra);}
 function inDialogError(err){const dst=$('.form-error',dialog)||$('.dialog-body',dialog);if(dst){const p=document.createElement('p');p.className='error-box';p.setAttribute('role','alert');p.textContent=t(errorLabel(err));dst.append(p);}else toast(errorLabel(err));}
-app.addEventListener('change',ev=>{
+app.addEventListener('change',async ev=>{
+  if(ev.target.dataset?.action==='site-import'){
+    const file=ev.target.files?.[0];if(!file)return;
+    try{const cfg=JSON.parse(await file.text());siteControl.update(cfg);toast('Saved');await render();}
+    catch{toast('A problem occurred. Please check the inputs and retry.');}
+    return;
+  }
   if(ev.target.id!=='language')return;
   lang=ev.target.value;
   config.users.filters[1][2]=[['active',t('Active')],['suspended',t('Suspended')]];
@@ -276,7 +282,7 @@ document.addEventListener('submit',async ev=>{
     else if(action==='finance-save'){const payload={...data,revision:target.data.revision};await finish(target.id?patch(`finance/${target.id}`,payload):post('finance',payload));}
     else if(action==='finance-void'){confirmAction('Void record',()=>finish(post(`finance/${target.id}/workflow`,{revision:target.data.revision,action:'void',reason:data.reason})));}
     else if(action==='platform-settings'){await finish(patch('settings',{...data,revision:Number(data.revision),maintenance:input.has('maintenance')}));}
-    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled')});toast('Saved');await render();}
+    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled'),maintenanceEnabled:input.has('maintenanceEnabled'),maintenanceMessage:data.maintenanceMessage});toast('Saved');await render();}
     else if(action==='ai-settings'){await finish(patch('ai',{enabled:input.has('enabled'),includeSources:input.has('includeSources')&&data.includeSources!=='no',revision:Number(data.revision),languages:input.getAll('languages'),defaultLanguage:data.defaultLanguage}));}
     else if(action==='ai-test'){
       const output=$('#ai-test-output');output.replaceChildren();

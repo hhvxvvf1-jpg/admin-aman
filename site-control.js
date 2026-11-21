@@ -12,6 +12,8 @@ const siteControl=(()=>{
     metaDescription:'AMAN – أمان: منصة مغربية للوقاية من العنف ضد النساء والفتيات.',
     emergencyNumbers:'19 · 177 · 15 · 8350',
     sosEnabled:true,
+    maintenanceEnabled:false,
+    maintenanceMessage:'الموقع في صيانة مؤقتة. خدمات الطوارئ متاحة دائماً.',
     modules:{
       ai:true,
       voice:true,
@@ -91,6 +93,8 @@ function siteControlHTML(){
           field('Meta description','metaDescription',s.metaDescription,{required:true,max:220,wide:true,area:true})+
           field('Emergency numbers','emergencyNumbers',s.emergencyNumbers,{required:true,max:80,wide:true})+
           check('Enable SOS button','sosEnabled',s.sosEnabled)+
+          check('Maintenance mode','maintenanceEnabled',s.maintenanceEnabled)+
+          field('Maintenance message','maintenanceMessage',s.maintenanceMessage,{max:200,wide:true})+
           submit('Apply preview')+
         `</form>`+
       `</section>`+
@@ -98,7 +102,7 @@ function siteControlHTML(){
         `<p class="sub">${h('Toggle which sections are active on the public index.html.')}</p>`+
         `<ul class="list">${moduleList.map(([key,label])=>`<li><span class="event">${h(label)}</span>${btn(s.modules[key]?'Enabled':'Disabled',`site-mod:${key}`,s.modules[key]?'primary':'secondary')}</li>`).join('')}</ul>`+
         `<hr class="divider"><div class="actions">${btn('Standard mode','site-preset:standard')}${btn('Emergency mode','site-preset:emergency')}${btn('French mode','site-preset:french')}</div>`+
-        `<hr class="divider"><div class="actions">${btn('Download patched index.html','site-download-html','primary')}${btn('Export config JSON','site-export')}${btn('Reset defaults','site-reset')}</div>`+
+        `<hr class="divider"><div class="actions">${btn('Download patched index.html','site-download-html','primary')}${btn('Export config JSON','site-export')}<label class="btn secondary">${h('Import config JSON')}<input type="file" accept="application/json,.json" data-action="site-import" hidden></label>${btn('Reset defaults','site-reset')}</div>`+
       `</section>`+
     `</div>`+
     `<section class="panel"><h2>${h('Live public site status')}</h2>`+

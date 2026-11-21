@@ -160,5 +160,7 @@ const messages={
   'Standard mode':['Mode standard','الوضع القياسي'],
   'Emergency mode':['Mode urgence','وضع الطوارئ'],
   'French mode':['Mode français','الوضع الفرنسي'],
-  'Meta description':['Description SEO (Meta)','وصف الموقع (Meta)']
+  'Meta description':['Description SEO (Meta)','وصف الموقع (Meta)'],
+  'Import config JSON':['Importer une config JSON','استيراد إعدادات JSON'],
+  'Maintenance message':['Message de maintenance','رسالة الصيانة']
 };
