@@ -282,7 +282,7 @@ document.addEventListener('submit',async ev=>{
     else if(action==='finance-save'){const payload={...data,revision:target.data.revision};await finish(target.id?patch(`finance/${target.id}`,payload):post('finance',payload));}
     else if(action==='finance-void'){confirmAction('Void record',()=>finish(post(`finance/${target.id}/workflow`,{revision:target.data.revision,action:'void',reason:data.reason})));}
     else if(action==='platform-settings'){await finish(patch('settings',{...data,revision:Number(data.revision),maintenance:input.has('maintenance')}));}
-    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled'),maintenanceEnabled:input.has('maintenanceEnabled'),maintenanceMessage:data.maintenanceMessage});toast('Saved');await render();}
+    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,ogTitle:data.ogTitle,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled'),maintenanceEnabled:input.has('maintenanceEnabled'),maintenanceMessage:data.maintenanceMessage});toast('Saved');await render();}
     else if(action==='ai-settings'){await finish(patch('ai',{enabled:input.has('enabled'),includeSources:input.has('includeSources')&&data.includeSources!=='no',revision:Number(data.revision),languages:input.getAll('languages'),defaultLanguage:data.defaultLanguage}));}
     else if(action==='ai-test'){
       const output=$('#ai-test-output');output.replaceChildren();
@@ -320,6 +320,13 @@ document.addEventListener('click',async ev=>{
       case 'ops-lab-csv':if(view==='ops-lab'){linkDownload(new Blob([operationsLab.csv()],{type:'text/csv;charset=utf-8'}),'aman-ops-practice.csv');}break;
       case 'ops-lab-reset':if(view==='ops-lab'){operationsLab.reset();toast('Practice restarted');await render();$('#ops-lab-outcome')?.focus();}break;
       case 'site-mod':if(view==='site-control'){siteControl.toggleModule(a);toast('Saved');await render();}break;
+      case 'site-preview-html':if(view==='site-control'){
+        const res=await fetch('./public-index.html');
+        const html=siteControl.patchHTML(await res.text());
+        const url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));
+        window.open(url,'_blank','noopener');
+        setTimeout(()=>URL.revokeObjectURL(url),5000);
+      }break;
       case 'site-download-html':if(view==='site-control'){
         const res=await fetch('./public-index.html');
         const html=await res.text();
