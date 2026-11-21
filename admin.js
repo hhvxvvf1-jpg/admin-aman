@@ -282,7 +282,7 @@ document.addEventListener('submit',async ev=>{
     else if(action==='finance-save'){const payload={...data,revision:target.data.revision};await finish(target.id?patch(`finance/${target.id}`,payload):post('finance',payload));}
     else if(action==='finance-void'){confirmAction('Void record',()=>finish(post(`finance/${target.id}/workflow`,{revision:target.data.revision,action:'void',reason:data.reason})));}
     else if(action==='platform-settings'){await finish(patch('settings',{...data,revision:Number(data.revision),maintenance:input.has('maintenance')}));}
-    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,ogTitle:data.ogTitle,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled'),maintenanceEnabled:input.has('maintenanceEnabled'),maintenanceMessage:data.maintenanceMessage});toast('Saved');await render();}
+    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,ogTitle:data.ogTitle,canonicalUrl:data.canonicalUrl,robotsMeta:data.robotsMeta,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled'),maintenanceEnabled:input.has('maintenanceEnabled'),maintenanceMessage:data.maintenanceMessage});toast('Saved');await render();}
     else if(action==='ai-settings'){await finish(patch('ai',{enabled:input.has('enabled'),includeSources:input.has('includeSources')&&data.includeSources!=='no',revision:Number(data.revision),languages:input.getAll('languages'),defaultLanguage:data.defaultLanguage}));}
     else if(action==='ai-test'){
       const output=$('#ai-test-output');output.replaceChildren();
@@ -332,6 +332,11 @@ document.addEventListener('click',async ev=>{
         const html=await res.text();
         linkDownload(new Blob([siteControl.patchHTML(html)],{type:'text/html;charset=utf-8'}),'index.html');
         toast('Saved');
+      }break;
+      case 'site-download-robots':if(view==='site-control'){
+        const s=siteControl.read();
+        const txt=`User-agent: *\n${s.robotsMeta.includes('noindex')?'Disallow: /':'Allow: /'}\nSitemap: ${s.canonicalUrl.replace(/\/$/,'')}/sitemap.xml\n`;
+        linkDownload(new Blob([txt],{type:'text/plain;charset=utf-8'}),'robots.txt');
       }break;
       case 'site-export':if(view==='site-control'){linkDownload(new Blob([JSON.stringify(siteControl.read(),null,2)],{type:'application/json;charset=utf-8'}),'aman-site-config.json');}break;
       case 'site-reset':if(view==='site-control'){siteControl.reset();toast('Practice restarted');await render();}break;
