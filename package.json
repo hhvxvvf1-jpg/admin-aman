@@ -5,6 +5,7 @@
   "description": "Read-only GitHub Pages preview of the AMAN admin console",
   "scripts": {
     "start": "node server.cjs",
+    "build:zip": "zip -q AMAN-admin-latest.zip index.html public-index.html admin.css admin.js i18n.js operations.js operations-lab.js pages-preview.js revision-lab.js site-control.js server.cjs package.json README.md mark.png pages-sample-illustration.png",
     "test": "node -e \"const fs=require('fs'),cp=require('child_process');for(const f of fs.readdirSync('.').filter(x=>/\\.(c?js)$/.test(x))){cp.execFileSync(process.execPath,['--check',f],{stdio:'inherit'});}const code=fs.readFileSync('pages-preview.js','utf8');const pp=new Function(code+';return pagesPreview;')();(async()=>{for(const v of ['dashboard','analytics','versions','incidents','users','cases','referrals','cms','quizzes','partners','community','roles','audit','finance','settings','ai','notices','notices/inbox']){await pp.read('/api/admin/'+v+'?offset=0');}try{await pp.read('/api/admin/cms',{method:'POST'});process.exit(1);}catch(e){if(e.status!==403)process.exit(1);}console.log('All checks passed.');})();\""
   }
 }
