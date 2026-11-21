@@ -10,7 +10,7 @@ const words=k=>String(k??'').replaceAll('_',' ');
 const trValue=k=>h(messages[k]?k:words(k));
 const icons={grid:'M3 3h7v7H3z M14 3h7v7h-7z M14 14h7v7h-7z M3 14h7v7H3z',users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M20 8a4 4 0 0 1 0 7 M22 21v-2a4 4 0 0 0-3-4 M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0',case:'M4 5h6l2 2h8v13H4z M8 13h8 M8 16h5',book:'M4 4h6a2 2 0 0 1 2 2v15a3 3 0 0 0-3-2H4z M20 4h-6a2 2 0 0 0-2 2v15a3 3 0 0 1 3-2h5z',pin:'M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z M15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0',chat:'M4 4h16v12H9l-5 4z M8 9h8 M8 12h6',shield:'M12 22s7-3 7-10V5l-7-3-7 3v7c0 7 7 10 7 10Z M9 12l2 2 4-5',chart:'M4 3v17h17 M8 16v-4 M13 16V8 M18 16V5',arrows:'M3 8h16l-3-3 M21 16H5l3 3',log:'M6 3h12v18H6z M9 8h6 M9 12h6 M9 16h4',search:'M15.5 15.5 21 21 M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0',bell:'M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8 M10 20a2 2 0 0 0 4 0',menu:'M4 6h16 M4 12h16 M4 18h16',external:'M13 5h6v6 M19 5l-9 9 M19 13v6H5V5h6',close:'M6 6l12 12 M6 18 18 6',plus:'M12 5v14 M5 12h14'};
 const icon=k=>`<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="${icons[k]||icons.grid}"/></svg>`;
-const nav=[['dashboard','Dashboard','grid','dashboard.view','Operations'],['analytics','Analytics','chart','analytics.view','Operations'],['versions','Versions and features','book','versions.view','Operations'],['editor-lab','Revision practice','book','lab.view','Operations'],['incidents','Security incidents','shield','incidents.view','Governance'],['users','Users','users','users.view','Operations'],['cases','Cases','case','cases.view','Safeguarding'],['referrals','Referrals','arrows','referrals.view','Safeguarding'],['cms','Content','book','cms.view','Operations'],['quizzes','Girls quizzes','book','cms.view','Operations'],['partners','Partners','pin','partners.view','Operations'],['community','Community','chat','community.view','Operations'],['roles','Roles','shield','roles.manage','Governance'],['audit','Audit','log','audit.view','Governance'],['finance','Finance','chart','finance.view','Governance'],['settings','Platform settings','grid','settings.view','Governance'],['ai','Assistant','chat','ai.view','Governance'],['notices','Staff notices','bell','notices.manage','Governance'],['inbox','Inbox','bell','notices.view','Operations']];
+const nav=[['dashboard','Dashboard','grid','dashboard.view','Operations'],['analytics','Analytics','chart','analytics.view','Operations'],['versions','Versions and features','book','versions.view','Operations'],['editor-lab','Revision practice','book','lab.view','Operations'],['ops-lab','Operations practice','shield','lab.view','Operations'],['incidents','Security incidents','shield','incidents.view','Governance'],['users','Users','users','users.view','Operations'],['cases','Cases','case','cases.view','Safeguarding'],['referrals','Referrals','arrows','referrals.view','Safeguarding'],['cms','Content','book','cms.view','Operations'],['quizzes','Girls quizzes','book','cms.view','Operations'],['partners','Partners','pin','partners.view','Operations'],['community','Community','chat','community.view','Operations'],['roles','Roles','shield','roles.manage','Governance'],['audit','Audit','log','audit.view','Governance'],['finance','Finance','chart','finance.view','Governance'],['settings','Platform settings','grid','settings.view','Governance'],['ai','Assistant','chat','ai.view','Governance'],['notices','Staff notices','bell','notices.manage','Governance'],['inbox','Inbox','bell','notices.view','Operations']];
 const statuses=['NEW','RECEIVED','INITIAL_REVIEW','HUMAN_ASSESSMENT','ACTION_REQUIRED','REFERRED','FOLLOW_UP','RESOLVED','CLOSED'];
 const groups=['women','girls','child'], audiences=['general',...groups], priorities=['low','normal','high','urgent'];
 const roles=['super_admin','platform_admin','content_manager','safeguarding_supervisor','women_caseworker','girls_caseworker','child_caseworker','authorized_professional','partner_admin','moderator','auditor','tech_support','member'];
@@ -121,6 +121,7 @@ async function render({focus=false}={}){
   try {
     const q=new URLSearchParams({...filters,offset:String(offset)});
     if(view==='editor-lab'){main.innerHTML=revisionLabHTML();return;}
+    if(view==='ops-lab'){main.innerHTML=operationsLabHTML();return;}
     const response=await api((view==='inbox'?'notices/inbox':view)+(view==='dashboard'||view==='analytics'?`?range=${range}`:view==='roles'?'':`?${q}`));
     if(epoch!==current||!session)return;
     if(view==='dashboard'){pending=response.pending;main.innerHTML=dashboardHTML(response);}
@@ -287,9 +288,7 @@ document.addEventListener('submit',async ev=>{
       confirmAction(target.data.hidden?'Restore':'Hide',()=>finish(patch(`community/${targetType}/${id}`,{hidden:!target.data.hidden,reason:data.reason})));
     }
   }catch(err){
-    if(action==='login'){
-      token='';session=null;if(out)out.textContent=t(err.status===429?errorLabel(err):'Sign-in failed. Check your credentials and code.');
-    } else if(out){out.innerHTML=`<p class="error-box">${h(errorLabel(err))}</p>`;}
+    if(out){out.innerHTML=`<p class="error-box">${h(errorLabel(err))}</p>`;}
     else inDialogError(err);
   }finally{if(button)button.disabled=false;}
 });
@@ -305,6 +304,13 @@ document.addEventListener('click',async ev=>{
       case 'lab-select':if(view==='editor-lab'){revisionLab.select(a);await render();$('[aria-pressed="true"][data-action^="lab-select:"]')?.focus();}break;
       case 'lab-restore':if(view==='editor-lab'){if(revisionLab.restore())toast('Practice draft restored');await render();$('#practice-draft')?.focus();}break;
       case 'lab-reset':if(view==='editor-lab'){revisionLab.reset();toast('Practice restarted');await render();$('[aria-pressed="true"][data-action^="lab-select:"]')?.focus();}break;
+      case 'ops-lab-view':if(view==='ops-lab'){operationsLab.setView(a);await render();$('#ops-lab-outcome')?.focus();}break;
+      case 'ops-lab-post':if(view==='ops-lab'){operationsLab.postFinance();toast('Practice draft restored');await render();$('#ops-lab-outcome')?.focus();}break;
+      case 'ops-lab-void':if(view==='ops-lab'){operationsLab.voidFinance($('#practice-void-reason')?.value);toast('Saved');await render();$('#ops-lab-outcome')?.focus();}break;
+      case 'ops-lab-actor':if(view==='ops-lab'){operationsLab.setActor(a);await render();$('#ops-lab-outcome')?.focus();}break;
+      case 'ops-lab-advance':if(view==='ops-lab'){operationsLab.advanceIncident();toast('Saved');await render();$('#ops-lab-outcome')?.focus();}break;
+      case 'ops-lab-csv':if(view==='ops-lab'){linkDownload(new Blob([operationsLab.csv()],{type:'text/csv;charset=utf-8'}),'aman-ops-practice.csv');}break;
+      case 'ops-lab-reset':if(view==='ops-lab'){operationsLab.reset();toast('Practice restarted');await render();$('#ops-lab-outcome')?.focus();}break;
       case 'range':range=a;await render();break;
       case 'task':go(a,['cms','quizzes'].includes(a)?{state:'review'}:a==='partners'?{state:'pending'}:a==='incidents'?{state:'in_progress'}:{type:'flag'});break;
       case 'menu':{const state=$('#sidebar').classList.toggle('open');el.setAttribute('aria-expanded',state);if(state)$('#sidebar .nav-link')?.focus();break;}

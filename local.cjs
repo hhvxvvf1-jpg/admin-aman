@@ -68,6 +68,7 @@ if(action==='keygen'){
       if(action==='setup'&&exists())throw Error('Setup already completed. Use the recovery launcher if needed.');
       const args=action==='setup'?['create',email,'super_admin','Local Administrator']:[action,email];
       const result=spawnSync(process.execPath,[path.join(repo,'scripts','staff.js'),...args],{cwd:repo,env,input:input.password+'\n',encoding:'utf8',timeout:30000});
+      if(result.error)throw Error(result.error.code==='ETIMEDOUT'?'Account setup timed out after 30 seconds.':result.error.message);
       if(result.status!==0)throw Error(result.stderr?.trim()||'Could not configure the local account.');
       process.stdout.write(result.stdout);
     }finally{fs.closeSync(fd);fs.unlinkSync(lock);db.close();}
