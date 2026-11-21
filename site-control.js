@@ -58,7 +58,8 @@ const siteControl=(()=>{
       .replace(/<html lang="[^"]*" dir="[^"]*">/,`<html lang="${e(s.defaultLang)}" dir="${dir}">`)
       .replace(/<title>[^<]*<\/title>/,`<title>${e(s.siteTitle)}</title>`)
       .replace(/<meta property="og:title" content="[^"]*">/,`<meta property="og:title" content="${e(s.ogTitle)}">`)
-      .replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${e(s.metaDescription)}">`)
+      .replace(/<link rel="canonical" href="[^"]*">/,`<link rel="canonical" href="${e(s.canonicalUrl)}">`)
+      .replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${e(s.metaDescription)}"><meta name="robots" content="${e(s.robotsMeta)}">`)
       .replace(/<meta name="theme-color" content="[^"]*">/,`<meta name="theme-color" content="${e(s.themeColor)}">`)
       .replace(/19 · 177 · 15 · 8350/g,e(s.emergencyNumbers));
     if(!s.sosEnabled)out=out.replace(/<button type="button" class="btn-sos"[^>]*>[\s\S]*?<\/button>/,'');
@@ -96,6 +97,8 @@ function siteControlHTML(){
           field('Default language','defaultLang',s.defaultLang,{items:[['ar',t('Arabic')],['fr',t('French')],['en',t('English')]]})+
           field('Meta description','metaDescription',s.metaDescription,{required:true,max:220,wide:true,area:true})+
           field('Social share title (OG)','ogTitle',s.ogTitle,{required:true,max:120,wide:true})+
+          field('Canonical URL','canonicalUrl',s.canonicalUrl,{required:true,max:200})+
+          field('Robots','robotsMeta',s.robotsMeta,{items:[['index,follow','index,follow'],['noindex,nofollow','noindex,nofollow']]})+
           field('Emergency numbers','emergencyNumbers',s.emergencyNumbers,{required:true,max:80,wide:true})+
           check('Enable SOS button','sosEnabled',s.sosEnabled)+
           check('Maintenance mode','maintenanceEnabled',s.maintenanceEnabled)+
@@ -107,7 +110,7 @@ function siteControlHTML(){
         `<p class="sub">${h('Toggle which sections are active on the public index.html.')}</p>`+
         `<ul class="list">${moduleList.map(([key,label])=>`<li><span class="event">${h(label)}</span>${btn(s.modules[key]?'Enabled':'Disabled',`site-mod:${key}`,s.modules[key]?'primary':'secondary')}</li>`).join('')}</ul>`+
         `<hr class="divider"><div class="actions">${btn('Standard mode','site-preset:standard')}${btn('Emergency mode','site-preset:emergency')}${btn('French mode','site-preset:french')}</div>`+
-        `<hr class="divider"><div class="actions">${btn('Preview patched site','site-preview-html','primary')}${btn('Download patched index.html','site-download-html')}${btn('Export config JSON','site-export')}<label class="btn secondary">${h('Import config JSON')}<input type="file" accept="application/json,.json" data-action="site-import" hidden></label>${btn('Reset defaults','site-reset')}</div>`+
+        `<hr class="divider"><div class="actions">${btn('Preview patched site','site-preview-html','primary')}${btn('Download patched index.html','site-download-html')}${btn('Download robots.txt','site-download-robots')}${btn('Export config JSON','site-export')}<label class="btn secondary">${h('Import config JSON')}<input type="file" accept="application/json,.json" data-action="site-import" hidden></label>${btn('Reset defaults','site-reset')}</div>`+
       `</section>`+
     `</div>`+
     `<section class="panel"><h2>${h('Live public site status')}</h2>`+

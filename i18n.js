@@ -164,5 +164,8 @@ const messages={
   'Import config JSON':['Importer une config JSON','استيراد إعدادات JSON'],
   'Maintenance message':['Message de maintenance','رسالة الصيانة'],
   'Social share title (OG)':['Titre de partage (OG)','عنوان المشاركة (OG)'],
-  'Preview patched site':['Aperçu du site modifié','معاينة الموقع المعدّل']
+  'Preview patched site':['Aperçu du site modifié','معاينة الموقع المعدّل'],
+  'Canonical URL':['URL canonique','الرابط الأساسي (Canonical)'],
+  'Robots':['Indexation (Robots)','الفهرسة (Robots)'],
+  'Download robots.txt':['Télécharger robots.txt','تحميل robots.txt']
 };
