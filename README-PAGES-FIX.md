@@ -11,3 +11,11 @@ The Pages preview is designed to work at a project subpath: the CSS, JavaScript 
 ## Versions and downloads
 
 The **Versions and features** page links to the available public samples and identifies actions that require private administration. `AMAN-source-d4007d1.zip` contains the tracked files of the full `amanapp` application at revision `d4007d1`, not a hosted backend, database, credentials, or a bundled Windows runtime. Start with the `DEPLOYMENT.md` in that archive. On the Pages site, all incident and finance records are fictional; no assistant calls or write actions are enabled.
+
+## Revision practice and current source
+
+Open `?lang=en#editor-lab` for the temporary, client-only CMS exercise: compare sample versions, reject a cross-age restoration, or restore fictional text and illustration as a new sample draft. No data is transmitted or persisted. The full backend source snapshot at `11f3429` and the implementation checklist are linked in **Versions and features**. `d4007d1` is kept as a previous source snapshot, not an online admin instance.
+
+## Operations practice
+
+Open `?lang=en#ops-lab` to practice posting/voiding a fictional ledger item, downloading its sample CSV, or closing an incident after switching to a simulated independent reviewer. The exercises use memory only and reset after reload. They do not enable any real permissions or send writes to the public repository or the full backend.

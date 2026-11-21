@@ -1,7 +1,7 @@
 'use strict';
 // This GitHub Pages edition never connects to an API. All examples are invented.
 const pagesPreview=(()=>{
-  const permissions=Object.freeze(['dashboard.view','analytics.view','cms.view','partners.view','finance.view','settings.view','versions.view','incidents.view','ai.view']);
+  const permissions=Object.freeze(['dashboard.view','analytics.view','cms.view','partners.view','finance.view','settings.view','versions.view','lab.view','incidents.view','ai.view']);
   const last='2026-01-31', stamp=last+'T12:00:00Z';
   const reports={
     incidents:[{id:'EXAMPLE-INC-01',category:'backup_recovery',severity:'medium',component:'data_store',state:'contained',updated_at:stamp,timeline:[{action:'contain',reason:'precaution_completed',actor_role:'tech_support',created_at:stamp},{action:'triage',reason:'assessment_started',actor_role:'tech_support',created_at:stamp},{action:'record',reason:'operator_reported',actor_role:'tech_support',created_at:stamp}]}],
@@ -38,7 +38,7 @@ const pagesPreview=(()=>{
     if(bits.length<=2){
       if(!id&&section==='analytics')return stats(value('range'));
       if(!id&&section==='dashboard')return {stats:stats(value('range')),pending:{partners:1,incidents:1},health:{api:'—',database:'—',backup:null,backupVisible:false}};
-      if(!id&&section==='versions')return {revision:'d4007d1',archive:'./AMAN-source-d4007d1.zip'};
+      if(!id&&section==='versions')return {revision:'11f3429',archive:'./AMAN-source-11f3429.zip',previous:'./AMAN-source-d4007d1.zip'};
       if(!id&&section==='ai')return {settings:{enabled:true,languages:['ar','fr','en'],includeSources:true},metrics:[{outcome:'answered',count:12},{outcome:'emergency',count:2}]};
       if(!id&&section==='settings')return {nameAr:'أمان',nameFr:'AMAN',nameEn:'AMAN',palette:'purple',logo:'mark.png',maintenance:false};
       if(Object.hasOwn(reports,section)){
