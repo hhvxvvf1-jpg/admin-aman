@@ -12,6 +12,8 @@ const siteControl=(()=>{
     metaDescription:'AMAN – أمان: منصة مغربية للوقاية من العنف ضد النساء والفتيات.',
     emergencyNumbers:'19 · 177 · 15 · 8350',
     sosEnabled:true,
+    maintenanceEnabled:false,
+    maintenanceMessage:'الموقع في صيانة مؤقتة. خدمات الطوارئ متاحة دائماً.',
     modules:{
       ai:true,
       voice:true,
@@ -91,6 +93,8 @@ function siteControlHTML(){
           field('Meta description','metaDescription',s.metaDescription,{required:true,max:220,wide:true,area:true})+
           field('Emergency numbers','emergencyNumbers',s.emergencyNumbers,{required:true,max:80,wide:true})+
           check('Enable SOS button','sosEnabled',s.sosEnabled)+
+          check('Maintenance mode','maintenanceEnabled',s.maintenanceEnabled)+
+          field('Maintenance message','maintenanceMessage',s.maintenanceMessage,{max:200,wide:true})+
           submit('Apply preview')+
         `</form>`+
       `</section>`+

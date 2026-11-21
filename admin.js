@@ -282,7 +282,7 @@ document.addEventListener('submit',async ev=>{
     else if(action==='finance-save'){const payload={...data,revision:target.data.revision};await finish(target.id?patch(`finance/${target.id}`,payload):post('finance',payload));}
     else if(action==='finance-void'){confirmAction('Void record',()=>finish(post(`finance/${target.id}/workflow`,{revision:target.data.revision,action:'void',reason:data.reason})));}
     else if(action==='platform-settings'){await finish(patch('settings',{...data,revision:Number(data.revision),maintenance:input.has('maintenance')}));}
-    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled')});toast('Saved');await render();}
+    else if(action==='site-control'){siteControl.update({siteTitle:data.siteTitle,themeColor:data.themeColor,defaultTheme:data.defaultTheme,defaultLang:data.defaultLang,metaDescription:data.metaDescription,emergencyNumbers:data.emergencyNumbers,sosEnabled:input.has('sosEnabled'),maintenanceEnabled:input.has('maintenanceEnabled'),maintenanceMessage:data.maintenanceMessage});toast('Saved');await render();}
     else if(action==='ai-settings'){await finish(patch('ai',{enabled:input.has('enabled'),includeSources:input.has('includeSources')&&data.includeSources!=='no',revision:Number(data.revision),languages:input.getAll('languages'),defaultLanguage:data.defaultLanguage}));}
     else if(action==='ai-test'){
       const output=$('#ai-test-output');output.replaceChildren();
