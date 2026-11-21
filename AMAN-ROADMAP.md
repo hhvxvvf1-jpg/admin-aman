@@ -1,6 +1,6 @@
 # AMAN Admin — remaining work before full platform control
 
-This is a product and deployment checklist, **not a declaration of completion**. Existing, exercised functions and limitations are recorded in [ADMIN.md](ADMIN.md). GitHub Pages is a read-only public preview; all operational controls below belong on the authenticated Node service. The Windows package is single-operator and local; it does not provide an online staff service.
+This is a product and deployment checklist, **not a declaration of completion**. Existing, exercised functions and limitations are recorded in `ADMIN.md` in [`amanapp`](https://github.com/hhvxvvf1-jpg/amanapp). GitHub Pages is a read-only public preview; all operational controls below belong on the authenticated Node service. The Windows package is single-operator and local; it does not provide an online staff service.
 
 | Workstream | Already available | Remaining acceptance work |
 |---|---|---|

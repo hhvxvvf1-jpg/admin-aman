@@ -1,4 +1,4 @@
-﻿AMAN ADMIN — INSTALLATION LOCALE WINDOWS x64 (PAS UNE DÉMO)
+AMAN ADMIN — INSTALLATION LOCALE WINDOWS x64 (PAS UNE DÉMO)
 
 1. Extraire TOUT le ZIP avec « Extraire tout » ou WinRAR « Extraire vers… ».
 2. Dans le dossier extrait, ouvrir SETUP-START-AMAN.cmd. Ne pas ouvrir index.html.
