@@ -153,5 +153,8 @@ const messages={
   'Export config JSON':['Exporter la config JSON','تصدير الإعدادات JSON'],
   'Download patched index.html':['Télécharger index.html modifié','تحميل index.html المعدّل'],
   'Settings are saved in your browser. Download the patched index.html or JSON config to deploy to your public site.':['Les paramètres sont enregistrés dans votre navigateur. Téléchargez index.html modifié ou la config JSON pour déployer.','تُحفظ الإعدادات في متصفحك. حمّل ملف index.html المعدّل أو إعدادات JSON للنشر على الموقع العام.'],
-  'Reset defaults':['Réinitialiser','إعادة الافتراضي']
+  'Reset defaults':['Réinitialiser','إعادة الافتراضي'],
+  'Live public site status':['État en direct du site public','الحالة المباشرة للموقع العام'],
+  'SOS button':['Bouton SOS','زر الطوارئ SOS'],
+  'Active modules':['Modules actifs','الوحدات النشطة']
 };

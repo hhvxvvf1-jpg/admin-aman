@@ -96,5 +96,16 @@ function siteControlHTML(){
         `<ul class="list">${moduleList.map(([key,label])=>`<li><span class="event">${h(label)}</span>${btn(s.modules[key]?'Enabled':'Disabled',`site-mod:${key}`,s.modules[key]?'primary':'secondary')}</li>`).join('')}</ul>`+
         `<hr class="divider"><div class="actions">${btn('Download patched index.html','site-download-html','primary')}${btn('Export config JSON','site-export')}${btn('Reset defaults','site-reset')}</div>`+
       `</section>`+
-    `</div>`;
+    `</div>`+
+    `<section class="panel"><h2>${h('Live public site status')}</h2>`+
+      detailFields([
+        ['Site title',s.siteTitle],
+        ['Default language',s.defaultLang.toUpperCase()],
+        ['Default theme',t(s.defaultTheme==='dark'?'Dark':'Light')],
+        ['Theme color',s.themeColor],
+        ['Emergency numbers',s.emergencyNumbers],
+        ['SOS button',t(s.sosEnabled?'Enabled':'Disabled')],
+        ['Active modules',`${Object.values(s.modules).filter(Boolean).length} / ${Object.keys(s.modules).length}`]
+      ])+
+    `</section>`;
 }
