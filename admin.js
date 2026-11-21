@@ -314,6 +314,12 @@ document.addEventListener('click',async ev=>{
       case 'ops-lab-csv':if(view==='ops-lab'){linkDownload(new Blob([operationsLab.csv()],{type:'text/csv;charset=utf-8'}),'aman-ops-practice.csv');}break;
       case 'ops-lab-reset':if(view==='ops-lab'){operationsLab.reset();toast('Practice restarted');await render();$('#ops-lab-outcome')?.focus();}break;
       case 'site-mod':if(view==='site-control'){siteControl.toggleModule(a);toast('Saved');await render();}break;
+      case 'site-download-html':if(view==='site-control'){
+        const res=await fetch('./public-index.html');
+        const html=await res.text();
+        linkDownload(new Blob([siteControl.patchHTML(html)],{type:'text/html;charset=utf-8'}),'index.html');
+        toast('Saved');
+      }break;
       case 'site-export':if(view==='site-control'){linkDownload(new Blob([JSON.stringify(siteControl.read(),null,2)],{type:'application/json;charset=utf-8'}),'aman-site-config.json');}break;
       case 'site-reset':if(view==='site-control'){siteControl.reset();toast('Practice restarted');await render();}break;
       case 'range':range=a;await render();break;

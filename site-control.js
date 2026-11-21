@@ -1,5 +1,6 @@
 'use strict';
 const siteControl=(()=>{
+  const STORAGE_KEY='aman-site-control';
   const defaults={
     siteTitle:'AMAN – أمان',
     taglineAr:'الأمان حق، والمساندة مسؤولية مشتركة',
@@ -20,19 +21,49 @@ const siteControl=(()=>{
       footer:true
     }
   };
-  let state=structuredClone(defaults);
+  function load(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed=JSON.parse(raw);
+        return {...structuredClone(defaults),...parsed,modules:{...defaults.modules,...(parsed.modules||{})}};
+      }
+    }catch{}
+    return structuredClone(defaults);
+  }
+  let state=load();
+  function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}}
   function read(){return structuredClone(state);}
   function update(patch){
     if(patch.modules){state.modules={...state.modules,...patch.modules};delete patch.modules;}
     state={...state,...patch};
+    save();
     return read();
   }
   function toggleModule(key){
-    if(Object.hasOwn(state.modules,key))state.modules[key]=!state.modules[key];
+    if(Object.hasOwn(state.modules,key)){state.modules[key]=!state.modules[key];save();}
     return read();
   }
-  function reset(){state=structuredClone(defaults);return read();}
-  return {read,update,toggleModule,reset};
+  function reset(){state=structuredClone(defaults);save();return read();}
+  function patchHTML(html){
+    const s=state;
+    const dir=s.defaultLang==='ar'?'rtl':'ltr';
+    let out=html
+      .replace(/<html lang="[^"]*" dir="[^"]*">/,`<html lang="${e(s.defaultLang)}" dir="${dir}">`)
+      .replace(/<title>[^<]*<\/title>/,`<title>${e(s.siteTitle)}</title>`)
+      .replace(/<meta name="theme-color" content="[^"]*">/,`<meta name="theme-color" content="${e(s.themeColor)}">`)
+      .replace(/19 · 177 · 15 · 8350/g,e(s.emergencyNumbers));
+    if(!s.sosEnabled)out=out.replace(/<button type="button" class="btn-sos"[^>]*>[\s\S]*?<\/button>/,'');
+    if(!s.modules.ai)out=out.replace(/<script src="app-ai\.js"><\/script>/,'');
+    if(!s.modules.voice)out=out.replace(/<script src="app-speech\.js"><\/script>/,'').replace(/<script src="app-voice\.js"><\/script>/,'');
+    if(!s.modules.search)out=out.replace(/<link rel="stylesheet" href="search\.css">\s*<script src="search\.js"><\/script>/,'');
+    if(!s.modules.community)out=out.replace(/<link rel="stylesheet" href="community\.css">\s*<script src="community\.js"><\/script>/,'');
+    if(!s.modules.protect)out=out.replace(/<link rel="stylesheet" href="protect\.css">[\s\S]*?<script src="protect\.js"><\/script>/,'');
+    if(!s.modules.partners)out=out.replace(/<section id="prt"[\s\S]*?<\/section>/,'');
+    if(!s.modules.footer)out=out.replace(/<footer>[\s\S]*?<\/footer>/,'');
+    return out;
+  }
+  return {read,update,toggleModule,reset,patchHTML};
 })();
 
 function siteControlHTML(){
@@ -47,7 +78,7 @@ function siteControlHTML(){
     ['footer','Footer (#ft)']
   ];
   return heading('Public site control','Manage the public AMAN website modules, branding, and emergency bar.')+
-    `<p class="notice">${h('Changes here are temporary in this preview. Export JSON to apply them to your public site.')}</p>`+
+    `<p class="notice">${h('Settings are saved in your browser. Download the patched index.html or JSON config to deploy to your public site.')}</p>`+
     `<div class="grid">`+
       `<section class="panel"><h2>${h('Branding & defaults')}</h2>`+
         `<form data-form="site-control" class="form-grid">`+
@@ -63,7 +94,7 @@ function siteControlHTML(){
       `<section class="panel"><h2>${h('Public modules')}</h2>`+
         `<p class="sub">${h('Toggle which sections are active on the public index.html.')}</p>`+
         `<ul class="list">${moduleList.map(([key,label])=>`<li><span class="event">${h(label)}</span>${btn(s.modules[key]?'Enabled':'Disabled',`site-mod:${key}`,s.modules[key]?'primary':'secondary')}</li>`).join('')}</ul>`+
-        `<hr class="divider"><div class="actions">${btn('Export config JSON','site-export','primary')}${btn('Reset defaults','site-reset')}</div>`+
+        `<hr class="divider"><div class="actions">${btn('Download patched index.html','site-download-html','primary')}${btn('Export config JSON','site-export')}${btn('Reset defaults','site-reset')}</div>`+
       `</section>`+
     `</div>`;
 }

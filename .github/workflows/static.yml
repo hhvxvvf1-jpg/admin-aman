@@ -28,7 +28,7 @@ jobs:
       - name: Assemble static site
         run: |
           mkdir -p dist
-          cp index.html admin.css admin.js i18n.js operations.js operations-lab.js pages-preview.js revision-lab.js site-control.js mark.png pages-sample-illustration.png AMAN-ROADMAP.md dist/
+          cp index.html public-index.html admin.css admin.js i18n.js operations.js operations-lab.js pages-preview.js revision-lab.js site-control.js mark.png pages-sample-illustration.png AMAN-ROADMAP.md dist/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
