@@ -341,6 +341,7 @@ document.addEventListener('click',async ev=>{
       case 'site-export':if(view==='site-control'){linkDownload(new Blob([JSON.stringify(siteControl.read(),null,2)],{type:'application/json;charset=utf-8'}),'aman-site-config.json');}break;
       case 'site-reset':if(view==='site-control'){siteControl.reset();toast('Practice restarted');await render();}break;
       case 'site-preset':if(view==='site-control'){siteControl.applyPreset(a);toast('Saved');await render();}break;
+      case 'admin-theme-toggle':{const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',next);try{localStorage.setItem('aman-admin-theme',next);}catch{}toast('Saved');break;}
       case 'range':range=a;await render();break;
       case 'task':go(a,['cms','quizzes'].includes(a)?{state:'review'}:a==='partners'?{state:'pending'}:a==='incidents'?{state:'in_progress'}:{type:'flag'});break;
       case 'menu':{const state=$('#sidebar').classList.toggle('open');el.setAttribute('aria-expanded',state);if(state)$('#sidebar .nav-link')?.focus();break;}
