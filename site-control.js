@@ -35,7 +35,10 @@ const siteControl=(()=>{
     return structuredClone(defaults);
   }
   let state=load();
-  function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}}
+  function save(){
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}
+    try{fetch('/api/site-control',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(state)}).catch(()=>{});}catch{}
+  }
   function read(){return structuredClone(state);}
   function update(patch){
     if(patch.modules){state.modules={...state.modules,...patch.modules};delete patch.modules;}
