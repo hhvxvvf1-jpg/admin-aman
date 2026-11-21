@@ -1,0 +1,22 @@
+﻿AMAN ADMIN — INSTALLATION LOCALE WINDOWS x64 (PAS UNE DÉMO)
+
+1. Extraire TOUT le ZIP avec « Extraire tout » ou WinRAR « Extraire vers… ».
+2. Dans le dossier extrait, ouvrir SETUP-START-AMAN.cmd. Ne pas ouvrir index.html.
+3. Au premier démarrage, saisir l'adresse du compte et un mot de passe de 14 caractères minimum (saisie masquée). Aucun email n'est envoyé.
+4. Dans votre application d'authentification, ajouter un compte avec une clé de configuration. Entrer la clé affichée dans la fenêtre et choisir « Basée sur le temps » / TOTP (SHA-1, 6 chiffres, 30 secondes). Garder la clé privée.
+5. Appuyer sur Entrée. La page http://127.0.0.1:3030/admin/ s'ouvre. Connectez-vous avec le même email, mot de passe et code à 6 chiffres. Garder la fenêtre AMAN ouverte.
+6. Les fois suivantes, rouvrir SETUP-START-AMAN.cmd. Si vous perdez l'accès, fermer AMAN puis ouvrir RECUPERER-ACCES.cmd sous le même compte Windows. Cela révoque les sessions et renouvelle mot de passe et clé TOTP.
+
+Données: %LOCALAPPDATA%\AMAN-Admin — conservées quand l'application est fermée. Supprimer le dossier extrait ne les efface pas. N'utilisez pas de profil Windows partagé et activez le chiffrement du disque. Ne perdez pas application.key: cette clé est nécessaire à la lecture des données chiffrées. Ne partagez pas la base ou la clé. Consultez program\amanapp\DEPLOYMENT.md pour le plan de sauvegarde.
+
+Cette édition écoute uniquement sur 127.0.0.1, ne contient aucun compte ou dossier de démonstration et n'est pas hébergée en ligne. La réception publique de signalements, d'audio et de demandes sensibles est désactivée. N'y ajoutez pas de données de mineurs, de survivantes ou de dossiers sensibles sans la validation juridique et de protection appropriée. Pas de certificat d'homologation CNDP.
+
+SAUVEGARDE HORS LIGNE ET RESTAURATION DE CONTRÔLE
+- Ouvrez NOUVELLE-CLE-SAUVEGARDE.cmd une fois, puis conservez la clé de sauvegarde dans votre gestionnaire de mots de passe. Ne la mettez pas à côté de l'archive et ne la confondez pas avec application.key.
+- Fermez AMAN. Ouvrez SAUVEGARDER-AMAN.cmd. Saisissez le chemin complet d'un nouveau fichier dans un dossier existant sur un volume NTFS, ainsi que la clé de sauvegarde. L'archive ne remplace jamais un fichier existant.
+- Fermez AMAN. Avec RESTAURER-COPIE-AMAN.cmd, choisissez l'archive et un nouveau dossier sur un volume chiffré. La commande vérifie l'archive et restaure une copie sans modifier votre installation active. Ne publiez pas le dossier de restauration.
+- Pour reprendre l'exploitation après une panne, gardez aussi une copie sécurisée de l'application.key originale et suivez DEPLOYMENT.md. Les fichiers temporaires et restaurés peuvent contenir des données non chiffrées au niveau de l'archive : utilisez BitLocker pour les emplacements concernés. Il n'y a pas de sauvegarde automatique.
+
+MISE À JOUR DU SITE PUBLIC
+- Pour mettre à jour une installation locale, fermez AMAN, faites une sauvegarde, extrayez cette édition dans un nouveau dossier et lancez SETUP-START-AMAN.cmd sous le même compte Windows. Ne remplacez pas la base ou la clé.
+- Dans le panneau admin, ouvrez l’éditeur du site public. Préparez le texte en arabe, français et anglais, puis soumettez-le. La publication exige un autre compte autorisé. Consultez le résultat sur http://127.0.0.1:3030/#home. Cela ne publie rien sur GitHub Pages.
