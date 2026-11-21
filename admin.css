@@ -22,3 +22,12 @@ dialog{border:1px solid var(--line);border-radius:14px;padding:0;width:min(660px
 .nav-link:hover{background:#f3ebfa}
 table tbody tr{transition:background-color .12s ease}
 table tbody tr:hover{background:#faf6fd}
+
+/* Enterprise Dark Mode & Royal Purple + Gold Tokens */
+[data-theme="dark"]{--bg:#130d1a;--paper:#1c1427;--ink:#f4effa;--muted:#b3a3c7;--line:#312342;--soft:#2a1b3d;--accent:#b47ae6;--deep:#e9dcf8}
+[data-theme="dark"] .notice{background:#231733;border-inline-start-color:#d4a34c}
+[data-theme="dark"] .icon-btn,[data-theme="dark"] .metric{background:#1c1427;border-color:#312342}
+[data-theme="dark"] .nav-link:hover{background:#281a38}
+[data-theme="dark"] table tbody tr:hover{background:#241833}
+[data-theme="dark"] .segmented{background:#241833}
+[data-theme="dark"] .segmented button[aria-pressed=true]{background:#34234a;color:#f3d28f}
