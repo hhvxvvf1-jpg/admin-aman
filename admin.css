@@ -9,3 +9,4 @@ dialog{border:1px solid var(--line);border-radius:14px;padding:0;width:min(660px
 .ops-totals{margin-bottom:7px}.ops-totals .value{font-size:clamp(15px,2.05vw,21px);overflow-wrap:anywhere}.ops-totals-note{margin-bottom:15px}
 
 .pages-notice{padding:.5rem 1.25rem;background:#38234d;color:#fff;font-size:.85rem;font-weight:650}
+.sample-illustration{display:block;max-width:min(100%,32rem);height:auto;border-radius:.75rem;margin-block:.5rem 1rem}

@@ -10,7 +10,7 @@ const words=k=>String(k??'').replaceAll('_',' ');
 const trValue=k=>h(messages[k]?k:words(k));
 const icons={grid:'M3 3h7v7H3z M14 3h7v7h-7z M14 14h7v7h-7z M3 14h7v7H3z',users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M20 8a4 4 0 0 1 0 7 M22 21v-2a4 4 0 0 0-3-4 M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0',case:'M4 5h6l2 2h8v13H4z M8 13h8 M8 16h5',book:'M4 4h6a2 2 0 0 1 2 2v15a3 3 0 0 0-3-2H4z M20 4h-6a2 2 0 0 0-2 2v15a3 3 0 0 1 3-2h5z',pin:'M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z M15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0',chat:'M4 4h16v12H9l-5 4z M8 9h8 M8 12h6',shield:'M12 22s7-3 7-10V5l-7-3-7 3v7c0 7 7 10 7 10Z M9 12l2 2 4-5',chart:'M4 3v17h17 M8 16v-4 M13 16V8 M18 16V5',arrows:'M3 8h16l-3-3 M21 16H5l3 3',log:'M6 3h12v18H6z M9 8h6 M9 12h6 M9 16h4',search:'M15.5 15.5 21 21 M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0',bell:'M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8 M10 20a2 2 0 0 0 4 0',menu:'M4 6h16 M4 12h16 M4 18h16',external:'M13 5h6v6 M19 5l-9 9 M19 13v6H5V5h6',close:'M6 6l12 12 M6 18 18 6',plus:'M12 5v14 M5 12h14'};
 const icon=k=>`<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="${icons[k]||icons.grid}"/></svg>`;
-const nav=[['dashboard','Dashboard','grid','dashboard.view','Operations'],['analytics','Analytics','chart','analytics.view','Operations'],['users','Users','users','users.view','Operations'],['cases','Cases','case','cases.view','Safeguarding'],['referrals','Referrals','arrows','referrals.view','Safeguarding'],['cms','Content','book','cms.view','Operations'],['quizzes','Girls quizzes','book','cms.view','Operations'],['partners','Partners','pin','partners.view','Operations'],['community','Community','chat','community.view','Operations'],['roles','Roles','shield','roles.manage','Governance'],['audit','Audit','log','audit.view','Governance'],['finance','Finance','chart','finance.view','Governance'],['settings','Platform settings','grid','settings.view','Governance'],['ai','Assistant','chat','ai.view','Governance'],['notices','Staff notices','bell','notices.manage','Governance'],['inbox','Inbox','bell','notices.view','Operations']];
+const nav=[['dashboard','Dashboard','grid','dashboard.view','Operations'],['analytics','Analytics','chart','analytics.view','Operations'],['versions','Versions and features','book','versions.view','Operations'],['incidents','Security incidents','shield','incidents.view','Governance'],['users','Users','users','users.view','Operations'],['cases','Cases','case','cases.view','Safeguarding'],['referrals','Referrals','arrows','referrals.view','Safeguarding'],['cms','Content','book','cms.view','Operations'],['quizzes','Girls quizzes','book','cms.view','Operations'],['partners','Partners','pin','partners.view','Operations'],['community','Community','chat','community.view','Operations'],['roles','Roles','shield','roles.manage','Governance'],['audit','Audit','log','audit.view','Governance'],['finance','Finance','chart','finance.view','Governance'],['settings','Platform settings','grid','settings.view','Governance'],['ai','Assistant','chat','ai.view','Governance'],['notices','Staff notices','bell','notices.manage','Governance'],['inbox','Inbox','bell','notices.view','Operations']];
 const statuses=['NEW','RECEIVED','INITIAL_REVIEW','HUMAN_ASSESSMENT','ACTION_REQUIRED','REFERRED','FOLLOW_UP','RESOLVED','CLOSED'];
 const groups=['women','girls','child'], audiences=['general',...groups], priorities=['low','normal','high','urgent'];
 const roles=['super_admin','platform_admin','content_manager','safeguarding_supervisor','women_caseworker','girls_caseworker','child_caseworker','authorized_professional','partner_admin','moderator','auditor','tech_support','member'];
@@ -62,7 +62,7 @@ function chart(series){
   const bars=series.map(({date:day,registrations},i)=>{const y=140*registrations/high, label=`${date(day)} · ${number(registrations)}`;return `<rect class="bar" x="${32+i*step}" y="${153-Math.max(y,1)}" width="${Math.max(step-4,3)}" height="${Math.max(y,1)}" rx="2" tabindex="0" aria-label="${e(label)}" data-point="${e(label)}"><title>${e(label)}</title></rect>`;}).join('');
   return `<svg class="chart" viewBox="0 0 ${width} 183" role="group" aria-label="${h('Registration trend')}"><path class="gridline" d="M30 13h527 M30 48h527 M30 83h527 M30 118h527 M30 153h527" fill="none"/><text x="2" y="17">${e(number(high))}</text><text x="4" y="156">${e(number(0))}</text>${bars}<text x="31" y="174">${e(series[0]?.date||'')}</text><text x="555" y="174" text-anchor="end">${e(series.at(-1)?.date||'')}</text></svg><div class="sub chart-detail" aria-live="polite"></div>`;
 }
-const pendingMeta={cms:['Content reviews','cms'],quizzes:['Quiz reviews','quizzes'],partners:['Partner reviews','partners'],community:['Community flags','community']};
+const pendingMeta={incidents:['Example security incidents','incidents'],cms:['Content reviews','cms'],quizzes:['Quiz reviews','quizzes'],partners:['Partner reviews','partners'],community:['Community flags','community']};
 const pendingList=tasks=>Object.entries(tasks||{}).length?`<ul class="list">${Object.entries(tasks).map(([id,count])=>`<li>${can(nav.find(x=>x[0]===pendingMeta[id][1])[3])?`<button class="link-button" data-action="task:${e(id)}">${h(pendingMeta[id][0])}</button>`:h(pendingMeta[id][0])}<span class="pill">${e(number(count))}</span></li>`).join('')}</ul>`:noData();
 const eventList=(items=[])=>items.length?`<ul class="list">${items.map(row=>`<li><span class="event">${trValue(row.action||row.event)}</span><time class="when">${e(date(row.created_at))}</time></li>`).join('')}</ul>`:noData();
 function statsHTML(stats){
@@ -70,9 +70,23 @@ function statsHTML(stats){
   return `<div class="metric-board">${Object.entries(stats.metrics).map(([key,value])=>`<div class="metric"><span class="mark">${icon(metricLabels[key][1])}</span><span class="label">${h(metricLabels[key][0])}</span><strong class="value">${e(number(value))}</strong></div>`).join('')}</div><section class="panel"><h2>${h('Registration trend')}</h2><p class="sub">${h(range==='year'?'Example registrations by month.':'Example registrations by day.')} · ${e(stats.from)} → ${e(stats.to)}</p>${chart(stats.series)}<p class="sub">${h('These numbers do not represent actual activity.')}</p></section>`;
 }
 function dashboardHTML(data){
-  return `${heading('Dashboard','Sample administrative activity.',rangeButtons())}<div class="banner"><div><p class="kicker">${h('Platform overview')}</p><h2>${h('Read-only preview')}</h2><p>${h('Fictional examples only. No accounts, personal data or live service metrics.')}</p></div><span class="pill">GitHub Pages</span></div><div class="grid"><div>${statsHTML(data.stats)}</div><div class="stack"><section class="panel"><h2>${h('Example pending tasks')}</h2>${pendingList(data.pending)}</section><section class="panel"><h2>${h('Private administration')}</h2><p>${h('The real admin panel requires a separately hosted server and secure sign-in.')}</p></section></div></div>`;
+  return `${heading('Dashboard','Sample administrative activity.',rangeButtons())}<div class="banner"><div><p class="kicker">${h('Platform overview')}</p><h2>${h('Read-only preview')}</h2><p>${h('Fictional examples only. No accounts, personal data or live service metrics.')}</p></div><button type="button" class="btn secondary" data-action="nav:versions">${h('Versions and features')}</button></div><div class="grid"><div>${statsHTML(data.stats)}</div><div class="stack"><section class="panel"><h2>${h('Example pending tasks')}</h2>${pendingList(data.pending)}</section><section class="panel"><h2>${h('Private administration')}</h2><p>${h('The real admin panel requires a separately hosted server and secure sign-in.')}</p></section></div></div>`;
 }
+function versionsHTML(data){
+  const rows=[
+    ['Dashboard','dashboard','Reports CSV, Excel and PDF'],['Content','cms','Image upload and editorial approval'],['Girls quizzes','quizzes','Independent quiz publication'],['Finance','finance','Financial edits and exports'],['Partners','partners','Partner verification and referrals'],['Security incidents','incidents','Record, review and close incidents'],['Assistant','ai','Assistant configuration and testing'],['Platform settings','settings','Branding and maintenance controls'],['Staff invitations',null,'One-time invitations, roles and MFA'],['Safeguarding',null,'Restricted casework and audio'],['Backup and recovery',null,'Encrypted snapshots and offline restore']
+  ];
+  return heading('Versions and features','One place to explore AMAN and obtain the full source.')+`<div class="grid"><section class="panel"><h2>${h('GitHub Pages edition')}</h2><p>${h('A public, read-only preview with fictional examples. No login is needed.')}</p>${btn('Dashboard','nav:dashboard')}</section><section class="panel"><h2>${h('Full AMAN Admin')}</h2><p>${h('Requires Node.js 22.13 or newer, SQLite and secure staff sign-in. It does not run on GitHub Pages.')}</p><p><a class="btn secondary" href="${e(data.archive)}" download>${h('Download full source ZIP')}</a></p><p class="sub">${h('Source revision')} <code>${e(data.revision)}</code> · <a href="https://github.com/hhvxvvf1-jpg/amanapp">amanapp</a></p></section></div><section class="panel"><h2>${h('Feature directory')}</h2>${table(['Feature','On this page','In full AMAN Admin'],rows.map(([label,id,full])=>[h(label),id?btn('Open sample',`nav:${id}`):h('Private only'),h(full)]))}</section>`;
+}
+function assistantSample(x){
+  return heading('Assistant','Read-only sample configuration.')+`<div class="grid"><section class="panel"><h2>${h('Assistant configuration')}</h2>${detailFields([['Assistant available',t(x.settings.enabled?'Yes':'No')],['Language',x.settings.languages.join(' · ')]])}<p>${h('This page does not send messages to an assistant.')}</p></section><section class="panel"><h2>${h('Example activity')}</h2>${detailFields(x.metrics.map(row=>[words(row.outcome),number(row.count)]))}</section></div>`;
+}
+function incidentSample(x){
+  return detailFields([['Reference',x.id],['Category',t(x.category)],['Component',t(x.component)],['Severity',t(x.severity)],['Status',t(x.state)]]) + `<h3>${h('Incident timeline')}</h3>${table(['Action','Reason','Role','Date'],x.timeline.map(row=>[trValue('incident_'+row.action),trValue(row.reason),trValue(row.actor_role),e(date(row.created_at))]))}`;
+}
+
 const config={
+ incidents:{label:'Security incidents',search:true,filters:[['state','Status',['in_progress','open','triage','contained','resolved','closed']],['severity','Severity',['low','medium','high','critical']]],headers:['Reference','Category','Severity','Status','Updated'],row:x=>[openCell('incidents',x.id,x.id),trValue(x.category),pill(x.severity),pill(x.state),e(date(x.updated_at))]},
  quizzes:{label:'Girls quizzes',search:true,filters:[['state','Status',cmsStates]],create:'cms.create',headers:['Question','Age range','Status','Updated'],row:x=>[openCell('quizzes',x.id,x.title_en),`${e(x.min_age)}–${e(x.max_age)}`,pill(x.state),e(date(x.updated_at))]},
  finance:{label:'Finance',search:true,dates:true,filters:[['kind','Type',opsUI.financeKinds],['state','Status',opsUI.financeStates]],create:'finance.edit',headers:['Label','Project','Type','Amount (MAD)','Status','Entry date'],row:x=>[openCell('finance',x.id,x.label),e(x.project),trValue(x.kind),e(opsUI.money(x.amount_minor)),pill(x.state),e(date(x.entry_date))]},
  notices:{label:'Staff notices',create:'notices.manage',custom:opsUI.noticeCell},
@@ -112,7 +126,8 @@ async function render({focus=false}={}){
     else if(view==='analytics')main.innerHTML=`${heading('Analytics','',`<div class="actions">${rangeButtons()}${can('analytics.export')?[btn('Export CSV','analytics-export:csv'),btn('Export Excel','analytics-export:xlsx'),btn('Export PDF','analytics-export:pdf')].join(''):''}</div>`)}${statsHTML(response)}`;
     else if(view==='roles'){detailEditor=response.items;main.innerHTML=`<section class="panel">${roleHTML(response)}</section>`;}
     else if(view==='settings')main.innerHTML=opsUI.settings(response);
-    else if(view==='ai')main.innerHTML=opsUI.ai(response);
+    else if(view==='ai')main.innerHTML=assistantSample(response);
+    else if(view==='versions')main.innerHTML=versionsHTML(response);
     else main.innerHTML=listHTML(response);
   } catch(err){if(epoch===current&&session)main.innerHTML=`${heading(nav.find(x=>x[0]===view)[1])}<p class="error-box" role="alert">${h('Unable to load this view.')} ${h(errorLabel(err))}</p>${btn('Try again','refresh')}`;}
 }
@@ -167,7 +182,7 @@ function cmsHTML(x){
   if(x.review_status==='review'&&can('cms.approve'))buttons.push(['Return to draft','return']);
   if(x.review_status==='published'&&can('cms.approve'))buttons.push(['Unpublish','unpublish']);
   if(x.review_status==='archived'&&can('cms.delete'))buttons.push(['Restore','restore']);
-  return `<p class="notice">${h('Content is shown as plain text. Safety guidance requires an independent reviewer and a source.')}</p>${editor}${isNew?'':`<hr class="divider"><div class="actions">${buttons.map(([label,action])=>btn(label,`cms-workflow:${action}`)).join('')}</div>${x.review_status==='review'&&can('cms.approve')?form('cms-publish',field('Date and time (optional)','publishAt','',{type:'datetime-local'}),'Approve and publish'):''}<h3>${h('History')}</h3>${eventList(x.history)}`}`;
+  return `<p class="notice">${h('Content is shown as plain text. Safety guidance requires an independent reviewer and a source.')}</p>${editor}${x.image?`<h3>${h('Public content image')}</h3><img class="sample-illustration" src="${e(x.image.src)}" alt="${e(x.image['alt_'+lang])}">`:''}${isNew?'':`<hr class="divider"><div class="actions">${buttons.map(([label,action])=>btn(label,`cms-workflow:${action}`)).join('')}</div>${x.review_status==='review'&&can('cms.approve')?form('cms-publish',field('Date and time (optional)','publishAt','',{type:'datetime-local'}),'Approve and publish'):''}<h3>${h('History')}</h3>${eventList(x.history)}`}`;
 }
 function partnerHTML(x){
   const create=!x.id;
@@ -182,7 +197,7 @@ function referralHTML(id,status){
 function communityHTML(type,x,flagId){
   return `${detailFields([['Title',x.title],['Status',words(x.hidden?'hidden':'visible')],['Body',x.body||x.text,true]])}<p class="notice">${h('Flag privacy concerns before publishing or restoring content.')}</p>${can('community.edit')?form('community-moderate',field('Reason','reason','privacy',{items:flagReasons}),x.hidden?'Restore':'Hide'):''}${flagId&&can('community.edit')?`<hr class="divider"><div class="actions">${btn('Mark reviewed','flag:reviewed')}${btn('Dismiss','flag:dismissed')}</div>`:''}`;
 }
-const titles={quizzes:'Girls quizzes',finance:'Finance',notices:'Staff notices',users:'Account',cases:'Cases',cms:'Content',partners:'Organization',roles:'Roles',referrals:'Referrals',post:'Posts',comment:'Comments',flag:'Flagged item'};
+const titles={incidents:'Security incidents',quizzes:'Girls quizzes',finance:'Finance',notices:'Staff notices',users:'Account',cases:'Cases',cms:'Content',partners:'Organization',roles:'Roles',referrals:'Referrals',post:'Posts',comment:'Comments',flag:'Flagged item'};
 async function showDetail(section,id='',extra=[]){
   const model={section,id,extra,data:null};
   dialogModel=model;
@@ -197,7 +212,7 @@ async function showDetail(section,id='',extra=[]){
     else if(id)x=await api(`${section}/${id}`);
     if(!dialog.open||dialogModel!==model||!session)return;
     model.data=x;
-    const body=section==='quizzes'?opsUI.quizHTML(x):section==='finance'?opsUI.financeDetail(x):section==='notices'?opsUI.noticeHTML():section==='cases'?caseHTML(x):section==='users'?accountHTML(x):section==='cms'?cmsHTML(x):section==='partners'?partnerHTML(x):section==='roles'?roleDetail(x):section==='referrals'?referralHTML(id,x.status):communityHTML(section,x,section==='flag'?id:null);
+    const body=section==='incidents'?incidentSample(x):section==='quizzes'?opsUI.quizHTML(x):section==='finance'?opsUI.financeDetail(x):section==='notices'?opsUI.noticeHTML():section==='cases'?caseHTML(x):section==='users'?accountHTML(x):section==='cms'?cmsHTML(x):section==='partners'?partnerHTML(x):section==='roles'?roleDetail(x):section==='referrals'?referralHTML(id,x.status):communityHTML(section,x,section==='flag'?id:null);
     modal(title,body);
   }catch(err){if(dialog.open&&dialogModel===model&&session)modal(title,`<p class="error-box" role="alert">${h(errorLabel(err))}</p>`+(section==='flag'&&can('community.edit')?btn('Dismiss','flag:dismissed'):''));}
 }
@@ -286,7 +301,7 @@ document.addEventListener('click',async ev=>{
     switch(action){
       case 'nav':go(a);break;
       case 'range':range=a;await render();break;
-      case 'task':go(a,['cms','quizzes'].includes(a)?{state:'review'}:a==='partners'?{state:'pending'}:{type:'flag'});break;
+      case 'task':go(a,['cms','quizzes'].includes(a)?{state:'review'}:a==='partners'?{state:'pending'}:a==='incidents'?{state:'in_progress'}:{type:'flag'});break;
       case 'menu':{const state=$('#sidebar').classList.toggle('open');el.setAttribute('aria-expanded',state);if(state)$('#sidebar .nav-link')?.focus();break;}
       case 'refresh':await render();break;
       case 'page':offset=Math.max(0,offset+(a==='next'?20:-20));await render({focus:true});break;
