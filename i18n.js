@@ -159,5 +159,6 @@ const messages={
   'Active modules':['Modules actifs','الوحدات النشطة'],
   'Standard mode':['Mode standard','الوضع القياسي'],
   'Emergency mode':['Mode urgence','وضع الطوارئ'],
-  'French mode':['Mode français','الوضع الفرنسي']
+  'French mode':['Mode français','الوضع الفرنسي'],
+  'Meta description':['Description SEO (Meta)','وصف الموقع (Meta)']
 };

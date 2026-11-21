@@ -9,6 +9,7 @@ const siteControl=(()=>{
     themeColor:'#4B176F',
     defaultTheme:'light',
     defaultLang:'ar',
+    metaDescription:'AMAN – أمان: منصة مغربية للوقاية من العنف ضد النساء والفتيات.',
     emergencyNumbers:'19 · 177 · 15 · 8350',
     sosEnabled:true,
     modules:{
@@ -51,6 +52,7 @@ const siteControl=(()=>{
     let out=html
       .replace(/<html lang="[^"]*" dir="[^"]*">/,`<html lang="${e(s.defaultLang)}" dir="${dir}">`)
       .replace(/<title>[^<]*<\/title>/,`<title>${e(s.siteTitle)}</title>`)
+      .replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${e(s.metaDescription)}">`)
       .replace(/<meta name="theme-color" content="[^"]*">/,`<meta name="theme-color" content="${e(s.themeColor)}">`)
       .replace(/19 · 177 · 15 · 8350/g,e(s.emergencyNumbers));
     if(!s.sosEnabled)out=out.replace(/<button type="button" class="btn-sos"[^>]*>[\s\S]*?<\/button>/,'');
@@ -86,6 +88,7 @@ function siteControlHTML(){
           field('Theme color','themeColor',s.themeColor,{required:true,max:20})+
           field('Default theme','defaultTheme',s.defaultTheme,{items:[['light',t('Light')],['dark',t('Dark')]]})+
           field('Default language','defaultLang',s.defaultLang,{items:[['ar',t('Arabic')],['fr',t('French')],['en',t('English')]]})+
+          field('Meta description','metaDescription',s.metaDescription,{required:true,max:220,wide:true,area:true})+
           field('Emergency numbers','emergencyNumbers',s.emergencyNumbers,{required:true,max:80,wide:true})+
           check('Enable SOS button','sosEnabled',s.sosEnabled)+
           submit('Apply preview')+
