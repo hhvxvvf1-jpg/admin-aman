@@ -18,3 +18,7 @@ dialog{border:1px solid var(--line);border-radius:14px;padding:0;width:min(660px
 .btn{transition:background-color .15s ease,border-color .15s ease,transform .12s ease}
 .btn:active:not(:disabled){transform:translateY(1px)}
 .notice{border-inline-start:3px solid var(--accent);background:#f9f4fd;padding:10px 14px;border-radius:8px}
+.nav-link{transition:background-color .15s ease,color .15s ease,transform .12s ease}
+.nav-link:hover{background:#f3ebfa}
+table tbody tr{transition:background-color .12s ease}
+table tbody tr:hover{background:#faf6fd}
