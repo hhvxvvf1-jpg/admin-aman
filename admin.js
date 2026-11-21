@@ -238,7 +238,13 @@ function globalSearch(){
 }
 function detailBack(){const x=dialogModel;if(x)return showDetail(x.section,x.id,x.extra);}
 function inDialogError(err){const dst=$('.form-error',dialog)||$('.dialog-body',dialog);if(dst){const p=document.createElement('p');p.className='error-box';p.setAttribute('role','alert');p.textContent=t(errorLabel(err));dst.append(p);}else toast(errorLabel(err));}
-app.addEventListener('change',ev=>{
+app.addEventListener('change',async ev=>{
+  if(ev.target.dataset?.action==='site-import'){
+    const file=ev.target.files?.[0];if(!file)return;
+    try{const cfg=JSON.parse(await file.text());siteControl.update(cfg);toast('Saved');await render();}
+    catch{toast('A problem occurred. Please check the inputs and retry.');}
+    return;
+  }
   if(ev.target.id!=='language')return;
   lang=ev.target.value;
   config.users.filters[1][2]=[['active',t('Active')],['suspended',t('Suspended')]];
