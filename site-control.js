@@ -109,7 +109,7 @@ function siteControlHTML(){
       `<section class="panel"><h2>${h('Public modules')}</h2>`+
         `<p class="sub">${h('Toggle which sections are active on the public index.html.')}</p>`+
         `<ul class="list">${moduleList.map(([key,label])=>`<li><span class="event">${h(label)}</span>${btn(s.modules[key]?'Enabled':'Disabled',`site-mod:${key}`,s.modules[key]?'primary':'secondary')}</li>`).join('')}</ul>`+
-        `<hr class="divider"><div class="actions">${btn('Standard mode','site-preset:standard')}${btn('Emergency mode','site-preset:emergency')}${btn('French mode','site-preset:french')}</div>`+
+        `<hr class="divider"><div class="actions">${btn('Standard mode','site-preset:standard')}${btn('Emergency mode','site-preset:emergency')}${btn('French mode','site-preset:french')}${btn('Toggle dark mode','admin-theme-toggle')}</div>`+
         `<hr class="divider"><div class="actions">${btn('Preview patched site','site-preview-html','primary')}${btn('Download patched index.html','site-download-html')}${btn('Download robots.txt','site-download-robots')}${btn('Export config JSON','site-export')}<label class="btn secondary">${h('Import config JSON')}<input type="file" accept="application/json,.json" data-action="site-import" hidden></label>${btn('Reset defaults','site-reset')}</div>`+
       `</section>`+
     `</div>`+

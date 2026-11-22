@@ -167,5 +167,6 @@ const messages={
   'Preview patched site':['Aperçu du site modifié','معاينة الموقع المعدّل'],
   'Canonical URL':['URL canonique','الرابط الأساسي (Canonical)'],
   'Robots':['Indexation (Robots)','الفهرسة (Robots)'],
-  'Download robots.txt':['Télécharger robots.txt','تحميل robots.txt']
+  'Download robots.txt':['Télécharger robots.txt','تحميل robots.txt'],
+  'Toggle dark mode':['Mode sombre / clair','تبديل الوضع الليلي']
 };
